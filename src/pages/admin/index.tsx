@@ -7,6 +7,7 @@ import {ColumnDef} from "@tanstack/react-table";
 import {Badge} from "../../components/ui/badge.tsx";
 import {useState} from "react";
 import {SearchableEventSelect} from "../../components/searchable-event-select.tsx";
+import {CaretSortIcon} from "@radix-ui/react-icons";
 
 type Participant = {
   id: string
@@ -20,31 +21,93 @@ type Participant = {
 const columns: ColumnDef<Participant>[] = [
   {
     accessorKey: "id",
-    header: "No",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          No
+          <CaretSortIcon/>
+        </Button>
+      )
+    },
   },
   {
     accessorKey: "invoice",
-    header: "Invoice",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Invoice
+          <CaretSortIcon/>
+        </Button>
+      )
+    },
   },
   {
     accessorKey: "name",
-    header: "Nama",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Nama
+          <CaretSortIcon/>
+        </Button>
+      )
+    },
   },
   {
     accessorKey: "email",
-    header: "Email",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email
+          <CaretSortIcon/>
+        </Button>
+      )
+    },
+
   },
   {
     accessorKey: "phone",
-    header: "No Telepon",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          No Telepon
+          <CaretSortIcon/>
+        </Button>
+      )
+    },
+
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          <CaretSortIcon/>
+        </Button>
+      )
+    },
     cell: ({ row }) => {
       const status = row.getValue("status") as string
       return (
-        <Badge
+        <Badge className="m-1 h-9 w-full rounded-full flex items-center justify-center"
           variant={
             status === "pending"
               ? "secondary"
