@@ -2,12 +2,17 @@ import './App.css'
 import {Route, Routes} from "react-router-dom";
 import AdminPage from "./pages/admin";
 import {RootLayout} from "./components/layouts/root-layout.tsx";
+import LoginPage from "./pages/auth/login";
 
 function App() {
 
   return (
     <>
        <Routes>
+          <Route path="/auth/login" element={<LoginPage/>}/>
+          <Route path="/admin/*" element={<RootLayout/>}>
+            <Route index element={<AdminPage/>}/>
+          </Route>
           <Route path="/" element={<RootLayout/>}>
             <Route index element={<AdminPage/>}/>
           </Route>
