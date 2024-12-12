@@ -13,65 +13,12 @@ import {Badge} from "../../components/ui/badge"
 import {Card, CardContent} from "../../components/ui/card.tsx";
 import {DataTable} from "../../components/data-table.tsx";
 import {useFindUsers} from "../../services/users/hooks/use-find-users.ts";
+import {UserEntity} from "../../services/users/entity/UserEntity.ts";
 
-const data = [
-  {
-    id: "1",
-    username: "admin",
-    displayName: "Desta Admin",
-    resetStatus: "No request",
-  },
-  {
-    id: "2",
-    username: "aclub",
-    displayName: "A-CLUB Admin",
-    resetStatus: "No request",
-  },
-  {
-    id: "3",
-    username: "user_admin",
-    displayName: "User Admin",
-    resetStatus: "No request",
-  },
-  {
-    id: "4",
-    username: "desta",
-    displayName: "Desta Admin",
-    resetStatus: "No request",
-  },
-  {
-    id: "5",
-    username: "ashop",
-    displayName: "A-SHOP",
-    resetStatus: "No request",
-  },
-  {
-    id: "6",
-    username: "cat_institute",
-    displayName: "CAT Institute",
-    resetStatus: "No request",
-  },
-  {
-    id: "7",
-    username: "orbi_trade",
-    displayName: "ORBI Trade",
-    resetStatus: "No request",
-  },
-  {
-    id: "8",
-    username: "sekuritas",
-    displayName: "Sekuritas Astronacci",
-    resetStatus: "No request",
-  },
-  {
-    id: "9",
-    username: "developer",
-    displayName: "Developer",
-    resetStatus: "No request",
-  },
-]
-
-const columns: ColumnDef<typeof data[0]>[] = [
+export default function SuperAdminPage() {
+  const { data: users } = useFindUsers()
+  
+  const columns: ColumnDef<UserEntity>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => {
@@ -151,7 +98,7 @@ const columns: ColumnDef<typeof data[0]>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(user.id)}>
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(user?.id.toString())}>
               Reset Password
             </DropdownMenuItem>
             <DropdownMenuItem>Edit User</DropdownMenuItem>
@@ -162,10 +109,6 @@ const columns: ColumnDef<typeof data[0]>[] = [
     },
   },
 ]
-
-export default function SuperAdminPage() {
-  const { data: users } = useFindUsers()
-  console.log(users)
   
   return (
     <Card>

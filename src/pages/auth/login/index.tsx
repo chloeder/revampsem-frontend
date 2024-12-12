@@ -7,15 +7,23 @@ import {Button} from "../../../components/ui/button.tsx";
 import {ArrowRight, Loader2} from "lucide-react";
 import {useState} from "react";
 import {useAuthLogin} from "../../../services/auth/hooks/use-auth-login.ts";
-import {LoginDTO} from "../../../services/auth/dto";
+import {authSchema} from "../../../services/auth/validators";
+import {z} from "zod";
+import {zodResolver} from "@hookform/resolvers/zod";
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
-  const form = useForm()
+  const form = useForm<z.infer<typeof authSchema>>({
+     resolver: zodResolver(authSchema),
+     defaultValues: {
+        username: "",
+        password: "",
+     }
+  })
   
   const login = useAuthLogin()
   
-  const onSubmit = async (data: LoginDTO) => {
+  const onSubmit = async (data: z.infer<typeof authSchema>) => {
     setIsLoading(true)
     try {
       await login.mutateAsync(data)
@@ -41,7 +49,7 @@ export default function LoginPage() {
                      <FormItem>
                         <FormLabel className="block text-sm font-medium text-gray-700 mb-1">Username</FormLabel>
                         <FormControl>
-                           <Input {...field} type="text" placeholder="john.doe" required
+                           <Input {...field} type="text" placeholder="john.doe"
                                   className="w-full px-4 py-2 border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" disabled={isLoading}/>
                         </FormControl>
                         <FormMessage/>
@@ -52,7 +60,7 @@ export default function LoginPage() {
                      <FormItem>
                         <FormLabel className="block text-sm font-medium text-gray-700 mb-1">Password</FormLabel>
                         <FormControl>
-                           <Input {...field} type="password" placeholder="********" required
+                           <Input {...field} type="password" placeholder="********"
                                   className="w-full px-4 py-2 border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500" disabled={isLoading}/>
                         </FormControl>
                         <FormMessage/>
