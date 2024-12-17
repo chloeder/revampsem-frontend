@@ -15,7 +15,10 @@ export function Navbar(){
         
         <div className="flex items-center space-x-4">
            <span className="text-sm">Developer</span>
-           <Button variant={"secondary"}>Logout</Button>
+           <Button variant={"secondary"} onClick={() => {
+              localStorage.removeItem("token")
+              window.location.reload()
+           }}>Logout</Button>
         </div>
      </header>
    )

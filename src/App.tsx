@@ -11,12 +11,16 @@ function App() {
   const {data: isAuth, isLoading} = useIsAuth();
   
 if (isLoading) {
-  return <Loader2 />;
+   return (
+     <div className="flex items-center justify-center h-[90vh]">
+        <Loader2 className="w-14 h-14 animate-spin text-orange-500"/>
+     </div>
+   );
 }
-
-const PrivateRoute = () => isAuth ? <Outlet /> : <LoginPage />;
-
-const PublicRoute = () => !isAuth ? <Outlet /> : <Navigate to="/" />;
+   
+   const PrivateRoute = () => isAuth ? <Outlet/> : <LoginPage/>;
+   
+   const PublicRoute = () => !isAuth ? <Outlet/> : <Navigate to="/" />;
 
 return (
   <Routes>
