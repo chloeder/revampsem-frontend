@@ -26,7 +26,8 @@ export default function LoginPage() {
   const onSubmit = async (data: z.infer<typeof authSchema>) => {
     setIsLoading(true)
     try {
-      await login.mutateAsync(data)
+       const res = await login.mutateAsync(data)
+       localStorage.setItem("token", res.token)
     } finally {
       setIsLoading(false)
     }
@@ -44,7 +45,7 @@ export default function LoginPage() {
           <div className="p-8 sm:p-12">
             <h2 className="text-3xl font-extrabold text-gray-900 mb-8">Welcome back</h2>
              <Form {...form}>
-                <form onSubmit={form.handleSubmit(() => onSubmit)} className="space-y-6">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                    <FormField control={form.control} name="username" render={({field}) => (
                      <FormItem>
                         <FormLabel className="block text-sm font-medium text-gray-700 mb-1">Username</FormLabel>
@@ -84,7 +85,7 @@ export default function LoginPage() {
                       </Link>
                    </div>
                    
-                   <div>
+
                       <Button
                         type="submit"
                         className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
@@ -99,7 +100,7 @@ export default function LoginPage() {
                            </>
                          )}
                       </Button>
-                   </div>
+
                 </form>
              </Form>
           </div>

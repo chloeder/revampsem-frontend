@@ -5,6 +5,8 @@ export interface UserEntity {
    password: string;
    profit_center_id: number;
    level: number;
+   reset_password: boolean;
+   token: string;
    created_at: string;
    updated_at: string;
 }

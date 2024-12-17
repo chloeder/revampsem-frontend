@@ -11,4 +11,10 @@ export class AuthApiService{
       
       return data.data;
    }
+   
+   async isAuth(): Promise<UserEntity> {
+      const data = await this.api.get<UserEntity>('/auth/is-auth');
+      
+      return data.data;
+   }
 }
