@@ -14,10 +14,15 @@ import {Card, CardContent} from "../../components/ui/card.tsx";
 import {DataTable} from "../../components/data-table.tsx";
 import {useFindUsers} from "../../services/users/hooks/use-find-users.ts";
 import {UserEntity} from "../../services/users/entity/UserEntity.ts";
+import {ModalForm} from "../../components/modal-form.tsx";
+import {FormCreateUser} from "./components/form-create-user.tsx";
+import {useState} from "react";
+import {FormEditUser} from "./components/form-edit-user.tsx";
 
 export default function SuperAdminPage() {
-  const { data: users } = useFindUsers()
-  
+  const [openCreate, setOpenCreate] = useState(false)
+  const [openUpdate, setOpenUpdate] = useState(false)
+  const { data } = useFindUsers()
   const columns: ColumnDef<UserEntity>[] = [
   {
     accessorKey: "id",
@@ -32,7 +37,7 @@ export default function SuperAdminPage() {
         </Button>
       )
     },
-    cell: ({ row }) => <div className="">{row.getValue("id")}</div>,
+    cell: ({ row }) => <div className="">{row.index+1}</div>,
   },
   {
     accessorKey: "username",
@@ -50,7 +55,7 @@ export default function SuperAdminPage() {
     cell: ({ row }) => <div className="lowercase">{row.getValue("username")}</div>,
   },
   {
-    accessorKey: "displayName",
+    accessorKey: "display_name",
     header: ({ column }) => {
       return (
         <Button
@@ -62,10 +67,10 @@ export default function SuperAdminPage() {
         </Button>
       )
     },
-    cell: ({ row }) => <div>{row.getValue("displayName")}</div>,
+    cell: ({ row }) => <div>{row.getValue("display_name")}</div>,
   },
   {
-    accessorKey: "resetStatus",
+    accessorKey: "reset_password",
     header: ({ column }) => {
       return (
         <Button
@@ -78,8 +83,8 @@ export default function SuperAdminPage() {
       )
     },
     cell: ({ row }) => (
-      <Badge variant="secondary" className="bg-emerald-100 text-emerald-700">
-        {row.getValue("resetStatus")}
+      <Badge variant="secondary" className="bg-zinc-100">
+        {row.getValue("reset_password")  ? "Yes Request" : "No Request"}
       </Badge>
     ),
   },
@@ -101,7 +106,11 @@ export default function SuperAdminPage() {
             <DropdownMenuItem onClick={() => navigator.clipboard.writeText(user?.id.toString())}>
               Reset Password
             </DropdownMenuItem>
-            <DropdownMenuItem>Edit User</DropdownMenuItem>
+            <DropdownMenuItem>
+              <ModalForm open={openUpdate} setOpen={setOpenUpdate} title={"Edit User"} triggerText={<span>Edit User</span>}>
+                <FormEditUser setOpen={setOpenUpdate} userId={user?.id}/>
+              </ModalForm>
+            </DropdownMenuItem>
             <DropdownMenuItem className="text-red-600">Delete User</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -117,10 +126,13 @@ export default function SuperAdminPage() {
           <div className="flex flex-col gap-4 p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Button>
-                  <PlusCircledIcon className="mr-2 h-4 w-4"/>
-                  Add User
-                </Button>
+                <ModalForm open={openCreate} setOpen={setOpenCreate} title={"Create User"} triggerText={
+                  <Button>
+                    <PlusCircledIcon className="mr-2 h-4 w-4"/>
+                    Add User
+                  </Button>}>
+                  <FormCreateUser setOpen={setOpenCreate}/>
+                </ModalForm>
                 <Button variant="secondary">
                   <PlusCircledIcon className="mr-2 h-4 w-4"/>
                   Setup Google Form
@@ -128,7 +140,7 @@ export default function SuperAdminPage() {
               </div>
             </div>
             
-            <DataTable columns={columns} data={users} />
+            <DataTable columns={columns} data={data} />
           </div>
         </div>
       </CardContent>

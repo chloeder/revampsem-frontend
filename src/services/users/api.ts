@@ -2,14 +2,15 @@ import {AxiosInstance} from "axios";
 import {api} from "../../lib/api.ts";
 import {UserEntity} from "./entity/UserEntity.ts";
 import {CreateUserDTO, UpdateUserDTO} from "./dto";
+import {ProfitCenterEntity} from "./entity/ProfitCenterEntity.ts";
 
 export class UserApiService {
    api: AxiosInstance = api;
    
    async getUsers(): Promise<UserEntity[] | undefined> {
-      const res = await this.api.get<UserEntity[] | undefined>('/users');
+      const data = await this.api.get<UserEntity[] | undefined>('/users');
       
-      return res.data;
+      return data.data;
    }
    
    async getUser(id: number): Promise<UserEntity | undefined> {
@@ -34,5 +35,11 @@ export class UserApiService {
       await this.api.delete(`/users/${id}`);
       
       return;
+   }
+   
+   async getProfitCenters(): Promise<ProfitCenterEntity[]> {
+      const data = await this.api.get<ProfitCenterEntity[]>('/users/profit-center');
+      
+      return data.data;
    }
 }

@@ -1,17 +1,24 @@
 import {UserApiService} from "../api.ts";
 import {useToast} from "../../../hooks/use-toast.ts";
-import {useMutation} from "@tanstack/react-query";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {UserEntity} from "../entity/UserEntity.ts";
 import {CreateUserDTO} from "../dto";
 import {AxiosError} from "axios";
 
 export const useCreateUser = () => {
    const api = new UserApiService();
+   const queryClient = useQueryClient();
    const {toast}= useToast();
    
    return useMutation<UserEntity, Error, CreateUserDTO>({
-      mutationFn: (dto: CreateUserDTO) => api.createUser(dto),
-      onSuccess: (data) => {
+      mutationFn: async (dto: CreateUserDTO) => {
+         const user = await api.createUser(dto);
+         if (!user) {
+            throw new Error("User creation failed");
+         }
+         return user;
+      },
+      onSuccess: async (data) => {
          console.log(data)
          toast({
             position: "top-right",
@@ -19,6 +26,7 @@ export const useCreateUser = () => {
             description: "User has been created successfully",
             status: "success"
          });
+         await queryClient.invalidateQueries({queryKey: ["users"]});
       },
       onError: (error) => {
          if (error instanceof AxiosError) {
