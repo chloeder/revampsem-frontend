@@ -1,21 +1,23 @@
 import {UserApiService} from "../api.ts";
 import {useToast} from "../../../hooks/use-toast.ts";
 import {AxiosError} from "axios";
-import {useMutation} from "@tanstack/react-query";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 
 export const useDeleteUser = () => {
    const api = new UserApiService();
+   const queryClient = useQueryClient();
    const {toast} = useToast();
    
    return useMutation({
       mutationFn: (id: number) => api.deleteUser(id),
-      onSuccess: () => {
+      onSuccess: async () => {
          toast({
             position: "top-right",
             title: "User deleted",
             description: "User has been deleted successfully",
             status: "success"
          });
+         await queryClient.invalidateQueries({queryKey: ["users"]});
       },
       onError: (error) => {
          if (error instanceof AxiosError) {

@@ -21,8 +21,8 @@ export const useUpdateUser = (id: number) => {
          console.log(data)
          toast({
             position: "top-right",
-            title: "User created",
-            description: "User has been created successfully",
+            title: "User updated",
+            description: "User has been updated successfully",
             status: "success"
          });
          await queryClient.invalidateQueries({queryKey: ["users"]});
