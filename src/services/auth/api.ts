@@ -1,7 +1,7 @@
 import {AxiosInstance} from "axios";
 import {api} from "../../lib/api.ts";
-import {UserEntity} from "../users/entity/UserEntity.ts";
-import {LoginDTO} from "./dto";
+import {UserEntity} from "../users/entities/UserEntity.ts";
+import {LoginDTO} from "./dtos";
 
 export class AuthApiService{
    api: AxiosInstance = api;

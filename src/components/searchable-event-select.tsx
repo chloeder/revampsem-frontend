@@ -4,33 +4,15 @@ import {Button} from "./ui/button.tsx";
 import {Check, ChevronsUpDown} from "lucide-react";
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "./ui/command.tsx";
 import {cn} from "../lib/utils.ts";
+import {useFindEvent} from "../services/event/hooks/use-find-event.ts";
+import {EventEntity} from "../services/event/entities/EventEntity.ts";
 
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-]
 
 export function SearchableEventSelect(){
 const [open, setOpen] = useState(false)
   const [value, setValue] = useState("")
+  const { data } = useFindEvent()
+  const events = data?.data || []
  
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -39,11 +21,11 @@ const [open, setOpen] = useState(false)
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-[80%] justify-between"
         >
           {value
-            ? frameworks.find((framework) => framework.value === value)?.label
-            : "Select framework..."}
+            ? events.find((event: EventEntity) => event.name === value)?.name
+            : "Select Events..."}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -51,22 +33,22 @@ const [open, setOpen] = useState(false)
         <Command>
           <CommandInput placeholder="Search framework..." />
           <CommandList>
-            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandEmpty>No events found.</CommandEmpty>
             <CommandGroup>
-              {frameworks.map((framework) => (
+              {events.length > 0 && events.map((event: EventEntity) => (
                 <CommandItem
-                  key={framework.value}
-                  value={framework.value}
+                  key={event.id}
+                  value={event.name}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue)
                     setOpen(false)
                   }}
                 >
-                  {framework.label}
+                  {event.name}
                   <Check
                     className={cn(
                       "ml-auto",
-                      value === framework.value ? "opacity-100" : "opacity-0"
+                      value === event.name ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>

@@ -6,7 +6,7 @@ import {Badge} from "../../components/ui/badge"
 import {Card, CardContent} from "../../components/ui/card.tsx";
 import {DataTable} from "../../components/data-table.tsx";
 import {useFindUsers} from "../../services/users/hooks/use-find-users.ts";
-import {UserEntity} from "../../services/users/entity/UserEntity.ts";
+import {UserEntity} from "../../services/users/entities/UserEntity.ts";
 import {ModalForm} from "../../components/modal-form.tsx";
 import {FormCreateUser} from "./components/form-create-user.tsx";
 import {useState} from "react";
@@ -15,11 +15,18 @@ import {KeyRound, Pencil, Trash2} from "lucide-react";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "../../components/ui/tooltip.tsx";
 import {useDeleteUser} from "../../services/users/hooks/use-delete-user.ts";
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel,
-  AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
-  AlertDialogHeader, AlertDialogTitle,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
   AlertDialogTrigger
 } from "../../components/ui/alert-dialog.tsx";
+
+
 
 export default function SuperAdminPage() {
   const [openCreate, setOpenCreate] = useState(false)

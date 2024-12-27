@@ -1,8 +1,8 @@
 import {AxiosInstance} from "axios";
 import {api} from "../../lib/api.ts";
-import {UserEntity} from "./entity/UserEntity.ts";
-import {CreateUserDTO, UpdateUserDTO} from "./dto";
-import {ProfitCenterEntity} from "./entity/ProfitCenterEntity.ts";
+import {UserEntity} from "./entities/UserEntity.ts";
+import {CreateUserDTO, UpdateUserDTO} from "./dtos";
+import {ProfitCenterEntity} from "./entities/ProfitCenterEntity.ts";
 
 export class UserApiService {
    api: AxiosInstance = api;
