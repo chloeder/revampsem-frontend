@@ -1,6 +1,6 @@
 import {Card, CardContent, CardHeader, CardTitle} from "../../components/ui/card.tsx";
 import {Button} from "../../components/ui/button.tsx";
-import {Database, Download, FileSpreadsheet, Plus, Upload} from "lucide-react";
+import {Database, FileSpreadsheet, Plus, Upload} from "lucide-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "../../components/ui/select.tsx";
 import {DataTable} from "../../components/data-table.tsx";
 import {ColumnDef} from "@tanstack/react-table";
@@ -8,6 +8,8 @@ import {Badge} from "../../components/ui/badge.tsx";
 import {useState} from "react";
 import {SearchableEventSelect} from "../../components/searchable-event-select.tsx";
 import {CaretSortIcon} from "@radix-ui/react-icons";
+import ExcelExportXLSX from "./components/export-excel-xlsx.tsx";
+import {ModalForm} from "../../components/modal-form.tsx";
 
 type Participant = {
   id: string
@@ -152,6 +154,8 @@ const data: Participant[] = [
 
 export default function AdminPage(){
    const [selectedStatus, setSelectedStatus] = useState("")
+  const [openImportModal, setOpenImportModal] = useState(false)
+  
    return (
       <Card>
           <CardHeader>
@@ -160,14 +164,15 @@ export default function AdminPage(){
           <CardContent className="space-y-6">
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-3">
-              <Button variant="outline">
-                <Download className="mr-2 h-4 w-4" />
-                Download Template
-              </Button>
-              <Button variant="outline">
-                <Upload className="mr-2 h-4 w-4" />
-                Import Data
-              </Button>
+              <ExcelExportXLSX data={data} filename={`Template Seminar ${new Date().getFullYear()}.xlsx`} text={'Download Template'} />
+              <ModalForm open={openImportModal} setOpen={setOpenImportModal} title={"Import Data Seminar"} triggerText={
+                <Button variant="outline">
+                  <Upload className="mr-2 h-4 w-4" />
+                  Import Data
+                </Button>}>
+                Test
+              </ModalForm>
+
               <Button variant="outline">
                 <FileSpreadsheet className="mr-2 h-4 w-4" />
                 Export Excel

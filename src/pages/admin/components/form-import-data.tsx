@@ -1,38 +1,16 @@
-import {Button} from "../../../components/ui/button.tsx";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "../../../components/ui/form.tsx";
 import {Input} from "../../../components/ui/input.tsx";
+import {Button} from "../../../components/ui/button.tsx";
 import {Loader2} from "lucide-react";
-import {useState} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {updateUserSchema} from "../../../services/users/validators";
-import {useUpdateUser} from "../../../services/users/hooks/use-update-user.ts";
-import {UserEntity} from "../../../services/users/entities/UserEntity.ts";
+import {createEventSchema} from "../../../services/event/validators";
 
-export function FormEditUser({setOpen, userId, user}: {setOpen: (open: boolean) => void, userId:number, user: UserEntity}) {
-   const [isLoading, setIsLoading] = useState(false)
-   const form = useForm<z.infer<typeof updateUserSchema>>({
-     resolver: zodResolver(updateUserSchema),
-     defaultValues: {
-        username: user.username,
-        display_name: user.display_name,
-        password: "",
-        password_confirmation: "",
-     }
+export default function FormImportData(){
+   const form = useForm<z.infer<typeof createEventSchema>>({
+     resolver: zodResolver(createEventSchema),
   })
-   const updateUser = useUpdateUser(userId)
-
-   
-   const onSubmit = async (data: z.infer<typeof updateUserSchema>) => {
-     setIsLoading(true)
-     try {
-        await updateUser.mutateAsync(data)
-        setOpen(false)
-     } finally {
-        setIsLoading(false)
-     }
-  }
    
    return (
       <Form {...form}>

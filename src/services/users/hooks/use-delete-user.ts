@@ -12,10 +12,8 @@ export const useDeleteUser = () => {
       mutationFn: (id: number) => api.deleteUser(id),
       onSuccess: async () => {
          toast({
-            position: "top-right",
             title: "User deleted",
             description: "User has been deleted successfully",
-            status: "success"
          });
          await queryClient.invalidateQueries({queryKey: ["users"]});
       },
@@ -23,10 +21,8 @@ export const useDeleteUser = () => {
          if (error instanceof AxiosError) {
             console.error(error)
             toast({
-               position: "top-right",
                title: "User deletion failed",
                description: error.response?.data.message,
-               status: "error"
             });
          }
       }
