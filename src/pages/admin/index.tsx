@@ -10,6 +10,7 @@ import {CaretSortIcon} from "@radix-ui/react-icons";
 import ExcelExportXLSX from "./components/export-excel-xlsx.tsx";
 import {ModalForm} from "../../components/modal-form.tsx";
 import {useFindAttendance} from "../../services/event/hooks/use-find-attendance.ts";
+import FormImportData from "./components/form-import-data.tsx";
 
 type Participant = {
   id: string
@@ -180,17 +181,19 @@ export default function AdminPage(){
       <Card>
           <CardHeader>
             <CardTitle>Data Management</CardTitle>
+            
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-3">
               <ExcelExportXLSX data={data} filename={`Template Seminar ${new Date().getFullYear()}.xlsx`} text={'Download Template'} />
               <ModalForm open={openImportModal} setOpen={setOpenImportModal} title={"Import Data Seminar"} triggerText={
-                <Button variant="outline">
+                  <Button variant="outline">
                   <Upload className="mr-2 h-4 w-4" />
                   Import Data
-                </Button>}>
-                Test
+                  </Button>
+              }>
+                <FormImportData />
               </ModalForm>
 
               <Button variant="outline">
