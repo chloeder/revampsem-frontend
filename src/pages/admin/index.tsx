@@ -4,7 +4,6 @@ import {Database, FileSpreadsheet, Plus, Upload} from "lucide-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "../../components/ui/select.tsx";
 import {DataTable} from "../../components/data-table.tsx";
 import {ColumnDef} from "@tanstack/react-table";
-import {Badge} from "../../components/ui/badge.tsx";
 import {useEffect, useState} from "react";
 import {SearchableEventSelect} from "../../components/searchable-event-select.tsx";
 import {CaretSortIcon} from "@radix-ui/react-icons";
@@ -107,23 +106,36 @@ const columns: ColumnDef<Participant>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => {
-      const status = row.getValue("attendance") as string
+    cell: () => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [openApproveModal, setOpenApproveModal] = useState(false)
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [openUpdateModal, setOpenUpdateModal] = useState(false)
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [openDeleteModal, setOpenDeleteModal] = useState(false)
       return (
-        <Badge className="m-1 h-9 w-full rounded-full flex items-center justify-center"
-          variant={
-            status === "pending"
-              ? "secondary"
-              : status === "confirmed"
-              ? "default"
-              : "outline"
-          }
-        >
-          {status}
-        </Badge>
+        <div className={'flex gap-2 justify-center'}>
+          <ModalForm open={openApproveModal} setOpen={setOpenApproveModal} title={"Import Data Seminar"} triggerText={
+            <Button size={'sm'} className={'rounded-2xl bg-amber-500 hover:bg-amber-400'}>
+              Approve
+            </Button>}>
+            Test
+          </ModalForm>
+          <ModalForm open={openUpdateModal} setOpen={setOpenUpdateModal} title={"Import Data Seminar"} triggerText={
+            <Button size={'sm'} className={'rounded-2xl  bg-blue-500 hover:bg-blue-400'}>
+              Update
+            </Button>}>
+            Test
+          </ModalForm>
+          <ModalForm open={openDeleteModal} setOpen={setOpenDeleteModal} title={"Import Data Seminar"} triggerText={
+            <Button size={'sm'} variant="destructive" className={'rounded-2xl'}>
+              Delete
+            </Button>}>
+            Test
+          </ModalForm>
+        </div>
       )
-    },
-  },
+    },  },
 ]
 
 const data: Participant[] = [
