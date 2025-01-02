@@ -8,8 +8,8 @@ import {useFindEvent} from "../services/event/hooks/use-find-event.ts";
 import {EventEntity} from "../services/event/entities/EventEntity.ts";
 
 
-export function SearchableEventSelect(){
-const [open, setOpen] = useState(false)
+export function SearchableEventSelect({onSelect}: { onSelect: (event: EventEntity) => void }) {
+  const [open, setOpen] = useState(false)
   const [value, setValue] = useState("")
   const { data } = useFindEvent()
   const events = data?.data || []
@@ -42,6 +42,7 @@ const [open, setOpen] = useState(false)
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue)
                     setOpen(false)
+                    onSelect(event)
                   }}
                 >
                   {event.name}

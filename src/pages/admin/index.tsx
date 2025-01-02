@@ -5,11 +5,12 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "../
 import {DataTable} from "../../components/data-table.tsx";
 import {ColumnDef} from "@tanstack/react-table";
 import {Badge} from "../../components/ui/badge.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {SearchableEventSelect} from "../../components/searchable-event-select.tsx";
 import {CaretSortIcon} from "@radix-ui/react-icons";
 import ExcelExportXLSX from "./components/export-excel-xlsx.tsx";
 import {ModalForm} from "../../components/modal-form.tsx";
+import {useFindAttendance} from "../../services/event/hooks/use-find-attendance.ts";
 
 type Participant = {
   id: string
@@ -17,7 +18,7 @@ type Participant = {
   name: string
   email: string
   phone: string
-  status: "pending" | "confirmed" | "cancelled"
+  status: string
 }
 
 const columns: ColumnDef<Participant>[] = [
@@ -94,7 +95,7 @@ const columns: ColumnDef<Participant>[] = [
 
   },
   {
-    accessorKey: "status",
+    accessorKey: "attendance",
     header: ({ column }) => {
       return (
         <Button
@@ -107,7 +108,7 @@ const columns: ColumnDef<Participant>[] = [
       )
     },
     cell: ({ row }) => {
-      const status = row.getValue("status") as string
+      const status = row.getValue("attendance") as string
       return (
         <Badge className="m-1 h-9 w-full rounded-full flex items-center justify-center"
           variant={
@@ -118,7 +119,7 @@ const columns: ColumnDef<Participant>[] = [
               : "outline"
           }
         >
-          {status.charAt(0).toUpperCase() + status.slice(1)}
+          {status}
         </Badge>
       )
     },
@@ -154,8 +155,15 @@ const data: Participant[] = [
 
 export default function AdminPage(){
    const [selectedStatus, setSelectedStatus] = useState("")
-  const [openImportModal, setOpenImportModal] = useState(false)
+   const [openImportModal, setOpenImportModal] = useState(false)
+   const [eventID, setEventID] = useState("")
+   const {data: attendees, refetch} = useFindAttendance(eventID)
+   const attendeesData = attendees?.data || []
   
+  useEffect(() => {
+    refetch()
+  }, [eventID, refetch])
+   
    return (
       <Card>
           <CardHeader>
@@ -190,7 +198,11 @@ export default function AdminPage(){
             {/* Controls */}
             <div className="flex flex-col sm:flex-row justify-between gap-4">
               <div className="flex flex-1 gap-4 flex-wrap">
-                <SearchableEventSelect />
+                <SearchableEventSelect onSelect={
+                  (event) => {
+                    setEventID(event.id.toString())
+                  }
+                }/>
                 <Select value={selectedStatus} onValueChange={setSelectedStatus}>
                   <SelectTrigger className="w-[200px]">
                     <SelectValue placeholder="Filter by Status" />
@@ -210,7 +222,7 @@ export default function AdminPage(){
             </div>
 
             {/* DataTable */}
-            <DataTable columns={columns} data={data} />
+            <DataTable columns={columns} data={attendeesData} />
           </CardContent>
         </Card>
    )
