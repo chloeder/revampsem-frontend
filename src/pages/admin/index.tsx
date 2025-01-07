@@ -172,6 +172,7 @@ export default function AdminPage(){
    const [eventID, setEventID] = useState("")
    const {data: attendees, refetch} = useFindAttendance(eventID)
    const attendeesData = attendees?.data || []
+  console.log(eventID)
   
   useEffect(() => {
     refetch()
@@ -215,7 +216,7 @@ export default function AdminPage(){
               <div className="flex flex-1 gap-4 flex-wrap">
                 <SearchableEventSelect onSelect={
                   (event) => {
-                    setEventID(event.id.toString())
+                    setEventID(event?.id.toString() === eventID ? "" : event?.id.toString() || "")
                   }
                 }/>
                 <Select value={selectedStatus} onValueChange={setSelectedStatus}>

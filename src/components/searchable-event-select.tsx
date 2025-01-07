@@ -8,7 +8,7 @@ import {useFindEvent} from "../services/event/hooks/use-find-event.ts";
 import {EventEntity} from "../services/event/entities/EventEntity.ts";
 
 
-export function SearchableEventSelect({onSelect}: { onSelect: (event: EventEntity) => void }) {
+export function SearchableEventSelect({onSelect}: { onSelect: (event: EventEntity | null ) => void}) {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState("")
   const { data } = useFindEvent()
